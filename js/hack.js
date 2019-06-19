@@ -83,7 +83,10 @@ $('.confirm_add_btn').click(function(){
     },
     success: function (json) {
       $("#main").show(500)
-      if (!!json.table_result) {
+      if(json.key){
+        $('.loadBox').hide(300);
+        $('.input_wrap_bad').show(500);
+      }else if (!!json.table_result) {
 
         if(json.graph_type == 'hotdynamic_chart'){
           $('.container_wrap_1').show();
@@ -818,7 +821,7 @@ $('.confirm_add_btn').click(function(){
     },
     error: function(){
       $('.loadBox').hide(300);
-      $('.input_wrap_bad').show(500);
+      alert('没网络了，大兄跌，先连上网再说呀！');
     }
   });
   
