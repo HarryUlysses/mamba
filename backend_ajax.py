@@ -1,3 +1,5 @@
+#coding=utf-8
+#!/usr/bin/python
 import sys
 import jieba
 import jieba.posseg as pseg
