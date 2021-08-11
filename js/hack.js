@@ -77,7 +77,7 @@ $('.confirm_add_btn').click(function(){
   $.ajax({
     type: "post",
     dataType:"json",
-    url: "/ana/ajax",
+    url: "http://104.43.105.64:9890/ana/ajax",
     data: {
         question: $('.input_add').val()
     },
