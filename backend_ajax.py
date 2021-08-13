@@ -214,9 +214,11 @@ class nlpSqlData :
         #return groupBy
         sqlBas = "select {0} from {1} where {2} {3}".format(field,table,timeStr,groupBy)
         return sqlBas
-    def queryRes(self,nlpres,config):
+    def queryRes(self,nlpres):
+
         frame_empty = pd.DataFrame(columns=['A', 'B'])
         sql = self.sqlStatement(nlpres)
+        print("sql:"+ str(sql))
         db=pymysql.connect(database=config['mysql']['test']['database'],user=config['mysql']['test']['user_name'],password=config['mysql']['test']['password'],host=config['mysql']['test']['host'],port=config['mysql']['test']['port'])
         cursor=db.cursor()
         try:
