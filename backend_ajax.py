@@ -311,14 +311,11 @@ class AjaxHandler(tornado.web.RequestHandler):
             final_result = web_json
         else:
             final_result = {"key":"error!"}
-#             print(web_json)
-#             final_result = {"key","value"}
         print(final_result)
         self.write(final_result)
 
 application = tornado.web.Application([
     (r"/ana/ajax", AjaxHandler),
-#     (r"/cssaa", MainHandler),
     ])
 
 if __name__ == '__main__':
