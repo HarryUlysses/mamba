@@ -19,7 +19,6 @@ def FindTime(words_dict):
     full_words = []
     words_list = []
     for row in words_dict:
-#         print("ddd"+row)
         this_flag = row[1]
         if this_flag in time_flags_list and last_flag not in time_flags_list:
 #             print(row[0])
@@ -103,20 +102,21 @@ class nlpSqlData :
                "十" : 10,
                "十一":11,
                "十二":12}
-        self.tableMap =   {"新增": "user1",
+        self.tableMap = {"新增": "user1",
                "投资":"investment",
                "充值":"recharge"}
-        self.fieldMap = {"金额" : "money",
-               "用户" : "user_id",
+        self.fieldMap = {"金额": "money",
+               "用户": "user_id",
                "地域": "city",
                "账户": "type"}
         self.groupByMap = {"账户" : "type",
                   "地域" : "city"}
-    def timeParse(self,timeField):
+
+    def timeParse(self, timeField):
         timeStartStamp = 0
         timeEndStamp = 0
-        if (timeField[0][0]) == "前" :
-            timeInt = int(self.gbgIntMap.get(timeField[0][1:-1],timeField[0][1:-1]))
+        if (timeField[0][0]) == "前":
+            timeInt = int(self.gbgIntMap.get(timeField[0][1:-1], timeField[0][1:-1]))
             timeEndStamp = time.mktime(datetime.datetime.now().timetuple())
             if timeField[0][-1] == "月" :
                 currentTimeType = datetime.datetime.now().month
@@ -128,7 +128,7 @@ class nlpSqlData :
                 currentTimeType = datetime.datetime.now().year
                 timeStartStamp = time.mktime(datetime.datetime.now().replace(year = currentTimeType-timeInt).replace(day = 1).timetuple())
 
-        else :
+        else:
             timeInt = int(self.gbgIntMap.get(timeField[0][0],timeField[0][0]))
             if timeField[0][1] == "月" :
                 #currentTimeType = datetime.datetime.now().month
@@ -142,12 +142,13 @@ class nlpSqlData :
             else:
             #年份暂时不涉及，逻辑不完整
                 currentTimeType = datetime.datetime.now().year
-                timeStartStamp = time.mktime(datetime.datetime.now().replace(day = timeInt).replace(day = 1).timetuple())
+                timeStartStamp = time.mktime(datetime.datetime.now().replace(day=timeInt).replace(day = 1).timetuple())
                 timeEndStamp = timeStartStamp + 3600 * 24
         return timeStartStamp,timeEndStamp
 
     def tableParse(self,targetField):
-        return self.tableMap.get(targetField[0],None)
+        return self.tableMap.get(targetField[0], None)
+
     #print(tableParse(nlpRes["target"]))
     def fieldParse(self,targetField,groupByField,timeField):
         groupByListIn = [self.groupByMap.get(i,"") for i in groupByField]
@@ -206,36 +207,36 @@ class nlpSqlData :
 
     def sqlStatement(self,nlpres):
         table = self.tableParse(nlpres["target"])
-        field = self.fieldParse(nlpres["target"],nlpres["groupBy"],nlpres["time"])
+        field = self.fieldParse(nlpres["target"], nlpres["groupBy"], nlpres["time"])
         #return nlpres
-        timeStart,timeEnd = self.timeParse(nlpres["time"])
+        timeStart, timeEnd = self.timeParse(nlpres["time"])
         timeStr = "create_time >= {0:.0f} and create_time < {1:.0f}".format(timeStart,timeEnd)
         groupBy = self.groupByParse(nlpres["time"],nlpres["groupBy"])
-        #return groupBy
         sqlBas = "select {0} from {1} where {2} {3}".format(field,table,timeStr,groupBy)
         return sqlBas
-    def queryRes(self,nlpres):
 
+    def queryRes(self, nlpres):
+        config = {}
         frame_empty = pd.DataFrame(columns=['A', 'B'])
         sql = self.sqlStatement(nlpres)
-        print("sql:"+ str(sql))
-        db=pymysql.connect(database=config['mysql']['test']['database'],user=config['mysql']['test']['user_name'],password=config['mysql']['test']['password'],host=config['mysql']['test']['host'],port=config['mysql']['test']['port'])
-        cursor=db.cursor()
+        print("sql:" + str(sql))
+        db = pymysql.connect(database=config['mysql']['test']['database'], user=config['mysql']['test']['user_name'], password=config['mysql']['test']['password'], host=config['mysql']['test']['host'],port=config['mysql']['test']['port'])
+        cursor = db.cursor()
         try:
             cursor.execute(sql)
         except Exception as e:
-            return frame_empty,False,str(e)
-        result=cursor.fetchall()
+            return frame_empty, False, str(e)
+
+        result = cursor.fetchall()
         columnDes = cursor.description
         columnNames = [columnDes[i][0] for i in range(len(columnDes))]
-        frame = pd.DataFrame([list(i) for i in result],columns = columnNames)
-        #frame = pd.DataFrame(list(result))
+        frame = pd.DataFrame([list(i) for i in result], columns=columnNames)
         db.commit()
         cursor.close()
         db.close()
-        return frame,True,""
+        return frame, True, ""
 
-def table_to_json(table_list,table_type):
+def table_to_json(table_list, table_type):
     result = {}
     if table_type == "热力图":
         result['graph_type'] = "hotdynamic_chart"
@@ -290,7 +291,7 @@ class AjaxHandler(tornado.web.RequestHandler):
         file_name = 'corpus.txt'
         jieba.load_userdict(file_name)
         words_dict = {}
-        seg_list = jieba.cut(question)
+#        seg_list = jieba.cut(question)
 #         print("Default Mode: " + "/ ".join(seg_list))  # 精确模式
         words = pseg.cut(question)
         word_list = []
@@ -300,17 +301,17 @@ class AjaxHandler(tornado.web.RequestHandler):
             word_list.append(word)
             word_list.append(flag)
             words_list.append(word_list)
-        # print(words_list)
+        print(words_list)
         #words_list = [["前",[]],["我"]]
         analyse_json = generate_api(words_list)
         print(analyse_json)
         print(nlpSqlData().queryRes(analyse_json)[0])
         print(nlpSqlData().sqlStatement(analyse_json))
         if nlpSqlData().queryRes(analyse_json)[1]:
-            web_json = table_to_json(nlpSqlData().queryRes(analyse_json)[0].values,analyse_json['graph'][0])
+            web_json = table_to_json(nlpSqlData().queryRes(analyse_json)[0].values, analyse_json['graph'][0])
             final_result = web_json
         else:
-            final_result = {"key":"error!"}
+            final_result = {"key": "error!"}
         print(final_result)
         self.write(final_result)
 
