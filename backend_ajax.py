@@ -3,7 +3,7 @@
 import sys
 import jieba
 import jieba.posseg as pseg
-import pymysql
+#import pymysql
 import pandas as pd
 import time
 import datetime
@@ -283,6 +283,11 @@ class MainHandler(tornado.web.RequestHandler):
         self.write("get-get-get-get....")
 
 class AjaxHandler(tornado.web.RequestHandler):
+
+    def set_default_header(self):
+        print("setting headers!!!")
+        self.set_header('Content-Type', 'application/json; charset=UTF-8')
+        self.set_header('Access-Control-Allow-Headers','Content-Type')
 
     def post(self):
         print(self.get_argument('question'))
