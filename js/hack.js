@@ -614,11 +614,11 @@ $('.confirm_add_btn').click(function(){
                           }
                       },
                  data:[          // 数据数组，name 为数据项名称，value 为数据项值
-                {value:235, name:'北京'},
-                {value:274, name:'武汉'},
-                {value:310, name:'上海'},
-                {value:335, name:'深圳'},
-                {value:400, name:'杭州'}
+                {value:235, name:"北京"},
+                {value:274, name:"武汉"},
+                {value:310, name:"上海"},
+                {value:335, name:"深圳"},
+                {value:400, name:"杭州"}
             ]
 //                      data:[
 //                          {value:json.table_result[1][1], name:json.table_result[0][1]},
