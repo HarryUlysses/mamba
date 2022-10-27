@@ -286,7 +286,8 @@ class AjaxHandler(tornado.web.RequestHandler):
 
     def set_default_header(self):
         print("setting headers!!!")
-        self.set_header('Content-Type', 'application/json; charset=UTF-8')
+        self.set_header('allow_origins', 'application/json; charset=UTF-8')
+        self.set_header('Access-Control-Allow-Origin','*')
         self.set_header('Access-Control-Allow-Headers','Content-Type')
 
     def post(self):
