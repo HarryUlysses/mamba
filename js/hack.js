@@ -78,7 +78,7 @@ $('.confirm_add_btn').click(function(){
     success: function (json) {
       $("#main").show(500)
 //      if (!!json.table_result) {
-        var json = {"graph_type","pie_chart"}
+        var json = {"graph_type":"pie_chart"}
         if(json.graph_type == 'hotdynamic_chart'){
           $('.container_wrap_1').show();
           var str_dom = '<p class="item_title">'+$('.input_add').val()+'<p><pclass="item_title_en">Regional Distribution of Invesstment User</p>'
