@@ -293,7 +293,7 @@ class AjaxHandler(tornado.web.RequestHandler):
     def post(self):
         print(self.get_argument('question'))
         #EG: 五月新增用户饼状图
-        final_result = "Front result"
+        final_result = {"key": "return success"}
 #         question = self.get_argument('question')
 #         file_name = 'corpus.txt'
 #         jieba.load_userdict(file_name)
