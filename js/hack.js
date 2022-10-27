@@ -1,11 +1,6 @@
-
 // 全局变量
 var add_flag = true;
 var add_report_count = 0;
-
-
-
-
 
 $('.export_btn').click(function(){
   convertCanvasToImage()
@@ -27,7 +22,6 @@ function createPDFObject(imgData) {
   doc.addImage(imgData, 5, 5, 600, 300, 'img');
   doc.save('test.pdf')
 }
-
 
 // 隐藏百度logo图标
 $(function(){
@@ -83,8 +77,8 @@ $('.confirm_add_btn').click(function(){
     },
     success: function (json) {
       $("#main").show(500)
-      if (!!json.table_result) {
-
+//      if (!!json.table_result) {
+        var json = {"graph_type","pie_chart"}
         if(json.graph_type == 'hotdynamic_chart'){
           $('.container_wrap_1').show();
           var str_dom = '<p class="item_title">'+$('.input_add').val()+'<p><pclass="item_title_en">Regional Distribution of Invesstment User</p>'
@@ -93,6 +87,7 @@ $('.confirm_add_btn').click(function(){
           var myChart_1 = echarts.init(dom_1);
           var app_1 = {};
           option_1 = null;
+
           var data = json.table_result;
           var geoCoordMap = {
             '海门': [121.15, 31.89],
@@ -287,6 +282,7 @@ $('.confirm_add_btn').click(function(){
             '大庆': [125.03, 46.58]
           };
 
+//        datatype:  {name:value}
           var convertData = function (data) {
             var res = [];
             for (var i = 0; i < data.length; i++) {
@@ -299,6 +295,8 @@ $('.confirm_add_btn').click(function(){
               }
             }
             return res;
+//            #{name:"武汉",
+//              value: "125.03, 46.58,value"}
           };
 
           option_1 = {
@@ -615,10 +613,17 @@ $('.confirm_add_btn').click(function(){
                               show: false
                           }
                       },
-                      data:[
-                          {value:json.table_result[1][1], name:json.table_result[0][1]},
-                          {value:json.table_result[1][0], name:json.table_result[0][0]}
-                      ]
+                 data:[          // 数据数组，name 为数据项名称，value 为数据项值
+                {value:235, name:'北京'},
+                {value:274, name:'武汉'},
+                {value:310, name:'上海'},
+                {value:335, name:'深圳'},
+                {value:400, name:'杭州'}
+            ]
+//                      data:[
+//                          {value:json.table_result[1][1], name:json.table_result[0][1]},
+//                          {value:json.table_result[1][0], name:json.table_result[0][0]}
+//                      ]
                   }
               ]
           };
@@ -639,7 +644,6 @@ $('.confirm_add_btn').click(function(){
               'insideTop', 'insideLeft', 'insideRight', 'insideBottom',
               'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight'
           ];
-
           app_4.configParameters = {
               rotate: {
                   min: -90,
@@ -670,7 +674,6 @@ $('.confirm_add_btn').click(function(){
                   max: 100
               }
           };
-
           app_4.config = {
               rotate: 90,
               align: 'left',
@@ -701,7 +704,6 @@ $('.confirm_add_btn').click(function(){
               }
           };
 
-
           var labelOption = {
               normal: {
                   show: false,
@@ -721,14 +723,16 @@ $('.confirm_add_btn').click(function(){
           };
 
           option_4 = {
+
             backgroundColor:"#1f273b",
-              color: ['#003366', '#006699', '#4cabce', '#e5323e'],
-              tooltip: {
+
+            color: ['#003366', '#006699', '#4cabce', '#e5323e'],
+            tooltip: {
                   trigger: 'axis',
                   axisPointer: {
                       type: 'shadow'
                   }
-              },
+            },
               // legend: {
               //     data: ['充值金额']
               // },
@@ -780,8 +784,6 @@ $('.confirm_add_btn').click(function(){
                   }
                 },
             },
-
-
               series: [
                   {
                       name: '充值金额',
@@ -814,7 +816,7 @@ $('.confirm_add_btn').click(function(){
         }
         
         $('.loadBox').hide(300);
-      }
+      //}
     },
     error: function(){
       $('.loadBox').hide(300);
