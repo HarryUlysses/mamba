@@ -1,0 +1,22 @@
+    server {
+      # 应用的端口
+      listen 80;
+      server_name localhost 104.43.105.64;
+      #server_name myApp.test.com;
+      
+      # 静态路由
+      #location ^~ /index/ {
+      #  root /home/sshuser/mamba/;
+      #}
+      # 静态路由
+      location / {
+        root /home/sshuser/mamba;
+        index index.html;
+	add_header Access-Control-Allow-Origin *;
+      }
+      location ~ \.(gif|jpg|png|js)$ {
+        root /home/sshuser/mamba;
+      }
+      
+    }
+
