@@ -291,8 +291,8 @@ class AjaxHandler(tornado.web.RequestHandler):
         self.set_header('Access-Control-Allow-Headers','Content-Type')
 
     def post(self):
+        self.set_header()
         print(self.get_argument('question'))
-        self.set_header('Access-Control-Allow-Origin', '*')
         #EG: 五月新增用户饼状图
         final_result = {"key": "return success"}
 #         question = self.get_argument('question')
