@@ -292,6 +292,7 @@ class AjaxHandler(tornado.web.RequestHandler):
 
     def post(self):
         self.set_default_header()
+        self.set_header('allow_origins', 'application/json; charset=UTF-8')
         print(self.get_argument('question').encode('utf-8'))
         #EG: 五月新增用户饼状图
         final_result = {"key": "return success"}
